@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="js/base.js"></script>
+    <script>
+
+        var langAbbr = localStorage.getItem("lang");
+        langAbbr = langAbbr == null ? "aze" : langAbbr;
+
+        LoadPage(langAbbr);
+
+        function LoadPage(lang) {
+
+            let langFileName = lang;
+            let path = "js/lang/" + langFileName + ".js";
+            var langJs = createElement({ name: "script", attributes: { "src": path, "defer": "defer" } });
+            document.head.appendChild(langJs);
+
+            var indexJs = createElement({ name: "script", attributes: { "src": "js/config/index.js", "defer": "defer" } });
+            langJs.onload = function () {
+                document.head.appendChild(indexJs);
+            }
+
+        }
+
+    </script>
+</head>
+
+<body>
+    <div>
+        <input type="text" placeholder="login" id="chk_login">
+        <br>
+        <input type="text" placeholder="password" id="chk_password">
+        <br>
+    </div>
+    <button onclick="checkUser()">Login</button>
+    <button onclick="visualize();">Register</button>
+    <div id="reg_form" style="margin-top:100px;display:none;">
+        <input type="text" placeholder="name" id="username">
+        <br>
+        <input type="text" placeholder="email" id="email">
+        <br>
+        <input type="text" placeholder="password" id="password">
+        <br>
+        <button onclick="Register()">Submit</button>
+    </div>
+    <script>
+        function visualize() {
+            var display = reg_form.style.display;
+            if (display == "none")
+                reg_form.style.display = "block";
+            else
+                reg_form.style.display = "none";
+        }
+
+        let login = {
+            name: null,
+            password: null
+        }
+
+
+
+        let users = [];//empty array for users
+
+        function Register() {
+
+            let user = {
+                __proto__: login,
+                email: null,
+                set _name(val) {
+                    if (val.length > 4 && val.length < 20)
+                        this.name = val;
+                    else
+                        alert("must be between 4 & 20");
+                        return;
+                },
+                set _email(val) {
+                    if (val.indexof("@")!= -1)
+                        this.email = val;
+                    else
+                        alert("dskjhfkjds");
+                        return;
+                }
+            }
+
+            user._name = username.value;
+            user._email = email.value;
+            user.password = password.value;
+            users.push(user);
+        }
+
+
+        function checkUser() {
+            let isFinded = false;
+            for (let k in users) {
+                if (users[k].email == chk_login.value && users[k].password == chk_password.value) {
+                    isFinded = true;
+                }
+
+            }
+            if (isFinded)
+                alert("user finded");
+            else
+                alert("user not found");
+        }
+
+
+
+
+    </script>
+</body>
+
+</html>
